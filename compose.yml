@@ -7,10 +7,13 @@ services:
     depends_on:
       hp-db:
         condition: service_healthy
+      hp-redis:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_HOST: hp-db
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER} # .env 파일로부터 환경 변수를 받아왔다.
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: hp-redis
 
   hp-db:
     image: mysql
@@ -25,3 +28,15 @@ services:
       test: ["CMD", "mysqladmin", "ping"]
       interval: 5s
       retries: 10
+
+  hp-redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+    environment:
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+
