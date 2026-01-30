@@ -81,12 +81,12 @@ public class KakaoService {
     // 3. 회원가입 또는 로그인
     public User loginOrSignup(KakaoUserInfo kakaoUserInfo) {
         String provider = "KAKAO";
-        Optional<User> existingUser = userRepository.findByProviderAndKakaoId(provider, kakaoUserInfo.getKakaoId());
+        Optional<User> existingUser = userRepository.findByProviderAndKakaoId(provider, kakaoUserInfo.getId());
         if (existingUser.isPresent()) return existingUser.get();
 
         // 신규 회원가입
         User newUser = User.builder()
-                .kakaoId(kakaoUserInfo.getKakaoId())
+                .kakaoId(kakaoUserInfo.getId())
                 .email(kakaoUserInfo.getEmail())
                 .provider(provider)
                 .build();
