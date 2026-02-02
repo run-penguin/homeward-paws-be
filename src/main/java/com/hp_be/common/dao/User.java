@@ -26,4 +26,5 @@ public class User {
     private String provider;
     private Long kakaoId;
     private String googleId;
+    private String naverId;
 }
