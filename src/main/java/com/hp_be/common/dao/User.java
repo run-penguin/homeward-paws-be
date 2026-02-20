@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -22,9 +24,23 @@ public class User {
 
     private String name;
     private String email;
+    private String password;
+
+    @Builder.Default
+    private boolean emailVerified = false;
+
+    private String verificationToken;
+    private LocalDateTime tokenExpiry;
 
     private String provider;
     private Long kakaoId;
     private String googleId;
     private String naverId;
+
+
+    public void verified() {
+        this.emailVerified = true;
+        this.verificationToken = null;
+        this.tokenExpiry = null;
+    }
 }
