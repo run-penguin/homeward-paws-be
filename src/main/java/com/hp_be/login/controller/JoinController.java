@@ -3,9 +3,11 @@ package com.hp_be.login.controller;
 import com.hp_be.common.dto.ApiResDTO;
 import com.hp_be.login.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.Map;
 
 @RestController
@@ -36,6 +38,8 @@ public class JoinController {
     @GetMapping("/verify")
     public ResponseEntity<ApiResDTO<Void>> verify(@RequestParam String token) {
         joinService.verifyEmail(token);
-        return ResponseEntity.ok(ApiResDTO.ok("이메일 인증이 완료되었습니다."));
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create("http://localhost:5173/verified/email"))
+                .build();
     }
 }

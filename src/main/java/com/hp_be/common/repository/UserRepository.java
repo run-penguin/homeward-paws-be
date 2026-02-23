@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByProviderAndGoogleId(String provider, String id);
     Optional<User> findByProviderAndNaverId(String provider, String id);
 
-    Optional<User> findByProviderIsNullAndEmailVerifiedIsTrueAndEmail(String email);
+    Optional<User> findByProviderIsNullAndEmailVerifiedAndEmail(boolean emailVerified, String email);
 
     Optional<User> findByVerificationToken(String token);
 }

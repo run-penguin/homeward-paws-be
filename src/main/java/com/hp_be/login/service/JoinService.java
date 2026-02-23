@@ -21,19 +21,28 @@ public class JoinService {
 
     // 이메일 중복 체크
     public boolean checkEmail(String email) {
-        Optional<User> user = userRepository.findByProviderIsNullAndEmailVerifiedIsTrueAndEmail(email);
+        Optional<User> user = userRepository.findByProviderIsNullAndEmailVerifiedAndEmail(true, email);
         return user.isEmpty();
     }
 
     // 이메일 인증을 위한 등록
     public void register(String email) {
+
+        // 기존에 완료되지 않은 동일한 주소가 있다면 가져온다.
+        Optional<User> oUser = userRepository.findByProviderIsNullAndEmailVerifiedAndEmail(false, email);
         String token = UUID.randomUUID().toString();
 
-        User user = User.builder()
-                .email(email)
-                .verificationToken(token)
-                .tokenExpiry(LocalDateTime.now().plusMinutes(10))
-                .build();
+        User user = oUser.orElse(null);
+
+        if (user == null) {
+            user = User.builder()
+                    .email(email)
+                    .verificationToken(token)
+                    .tokenExpiry(LocalDateTime.now().plusMinutes(10))
+                    .build();
+        } else {
+            user.setToken(token, LocalDateTime.now().plusMinutes(10));
+        }
 
         userRepository.save(user);
         emailService.sendVerificationEmail(email, token);
@@ -48,5 +57,6 @@ public class JoinService {
         }
 
         user.verified();
+        userRepository.save(user);
     }
 }

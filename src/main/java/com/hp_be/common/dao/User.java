@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -42,5 +43,10 @@ public class User {
         this.emailVerified = true;
         this.verificationToken = null;
         this.tokenExpiry = null;
+    }
+
+    public void setToken(String token, LocalDateTime expiry) {
+        this.verificationToken = token;
+        this.tokenExpiry = expiry;
     }
 }
