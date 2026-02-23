@@ -2,7 +2,7 @@ package com.hp_be.login.service;
 
 import com.hp_be.common.dao.User;
 import com.hp_be.common.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,13 +10,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class JoinService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private EmailService emailService;
+    private final UserRepository userRepository;
+    private final EmailService emailService;
 
 
     // 이메일 중복 체크

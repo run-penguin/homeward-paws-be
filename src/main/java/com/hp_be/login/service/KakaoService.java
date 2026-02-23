@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.hp_be.common.dao.User;
 import com.hp_be.common.repository.UserRepository;
 import com.hp_be.login.dto.KakaoUserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,7 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class KakaoService {
 
     @Value("${kakao.client-id}")
@@ -37,8 +38,7 @@ public class KakaoService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final Gson gson = new Gson();
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
 
     // 1. 액세스 토큰 받기

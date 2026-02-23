@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-    
-    // autowired 말고 final을 사용해야하는 이유가 뭘까?
+
     private final JavaMailSender mailSender;
     
     public void sendVerificationEmail(String to, String token) {
