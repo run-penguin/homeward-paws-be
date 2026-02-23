@@ -1,6 +1,7 @@
 package com.hp_be.login.service;
 
 import com.hp_be.common.dao.User;
+import com.hp_be.common.repository.UserQueryRepository;
 import com.hp_be.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,21 +17,21 @@ public class JoinService {
     private final UserRepository userRepository;
     private final EmailService emailService;
 
+    private final UserQueryRepository userQueryRepository;
 
     // 이메일 중복 체크
     public boolean checkEmail(String email) {
-        Optional<User> user = userRepository.findByProviderIsNullAndEmailVerifiedAndEmail(true, email);
-        return user.isEmpty();
+        return !userQueryRepository.existsByEmail(email);
     }
 
-    // 이메일 인증을 위한 등록
+    // 이메일 발송 전 등록 (토큰 정보 저장을 위함)
     public void register(String email) {
 
-        // 기존에 완료되지 않은 동일한 주소가 있다면 가져온다.
-        Optional<User> oUser = userRepository.findByProviderIsNullAndEmailVerifiedAndEmail(false, email);
+        // 미인증 유저 가져오기
+        Optional<User> oUser = userQueryRepository.findUnverifiedByEmail(email);
         String token = UUID.randomUUID().toString();
 
-        User user = oUser.orElse(null);
+        User user  = oUser.orElse(null);
 
         if (user == null) {
             user = User.builder()
@@ -56,5 +57,11 @@ public class JoinService {
 
         user.verified();
         userRepository.save(user);
+    }
+
+    // 이메일 인증 완료 확인
+    public boolean checkEmailVerified(String email) {
+        Optional<User> oUser = userQueryRepository.findVerifiedByEmail(email);
+        return oUser.isPresent();
     }
 }

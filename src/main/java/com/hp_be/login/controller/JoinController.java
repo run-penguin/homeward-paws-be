@@ -42,4 +42,15 @@ public class JoinController {
                 .location(URI.create("http://localhost:5173/verified/email"))
                 .build();
     }
+
+    @GetMapping("/email/verified")
+    public ResponseEntity<ApiResDTO<Boolean>> checkEmailVerified(@RequestParam String email) {
+        boolean isVerified = joinService.checkEmailVerified(email);
+
+        if (isVerified) {
+            return ResponseEntity.ok(ApiResDTO.ok("", true));
+        } else {
+            return ResponseEntity.ok(ApiResDTO.ok("", false));
+        }
+    }
 }

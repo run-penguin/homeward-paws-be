@@ -37,6 +37,7 @@ public class User {
     private Long kakaoId;
     private String googleId;
     private String naverId;
+    private String userId;
 
 
     public void verified() {
