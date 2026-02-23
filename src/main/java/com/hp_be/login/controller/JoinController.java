@@ -35,7 +35,7 @@ public class JoinController {
         return ResponseEntity.ok(ApiResDTO.ok("인증 이메일을 발송했습니다."));
     }
 
-    @GetMapping("/verify")
+    @GetMapping("/email/verify")
     public ResponseEntity<ApiResDTO<Void>> verify(@RequestParam String token) {
         joinService.verifyEmail(token);
         return ResponseEntity.status(HttpStatus.FOUND)

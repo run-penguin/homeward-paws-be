@@ -15,7 +15,7 @@ public class EmailService {
     private final JavaMailSender mailSender;
     
     public void sendVerificationEmail(String to, String token) {
-        String link = "http://localhost:8081/api/join/verify?token=" + token;
+        String link = "http://localhost:8081/api/join/email/verify?token=" + token;
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
